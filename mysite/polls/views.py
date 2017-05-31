@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+
+# Create your views here.
+
+from django.http import HttpResponse
+from django.template import loader
+
+from .models import Choice, Question
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -54,8 +61,12 @@ def vote(request, question_id):
 	else:
 		selected_choice.votes += 1
 		selected_choice.save()
-		return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+	return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 def detail(request, question_id):
 	question = get_object_or_404(Question, pk=question_id)
 	return render(request, 'polls/detail.html', {'question': question})
+
+def results(request, question_id):
+	question = get_object_or_404(Question, pk=question_id)
+	return render(request, 'polls/results.html', { 'question': question })
